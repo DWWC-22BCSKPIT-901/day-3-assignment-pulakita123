@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+// Function to split the special binary string and return the largest lexicographical result
+string makeLargestSpecial(string s) {
+    if (s.empty()) return "";
+    
+    vector<string> substrings;
+    int balance = 0, start = 0;
+    
+    // Split the string into special substrings
+    for (int i = 0; i < s.size(); ++i) {
+        balance += (s[i] == '1') ? 1 : -1;
+        
+        // When balance is zero, we have a valid special substring
+        if (balance == 0) {
+            string substring = s.substr(start + 1, i - start - 1); // Get the substring excluding the first and last character
+            substrings.push_back('1' + makeLargestSpecial(substring) + '0'); // Recursively process inner substring and add '1' at the start and '0' at the end
+            start = i + 1;
+        }
+    }
+    
+    // Sort the substrings in lexicographically descending order
+    sort(substrings.begin(), substrings.end(), greater<string>());
+    
+    // Concatenate all the substrings to form the result
+    string result = "";
+    for (const string& sub : substrings) {
+        result += sub;
+    }
+    
+    return result;
+}
+
+int main() {
+    string s;
+    cout << "Enter a special binary string: ";
+    cin >> s;
+    
+    string result = makeLargestSpecial(s);
+    cout << "Lexicographically largest special binary string: " << result << endl;
+    
+    return 0;
+}
