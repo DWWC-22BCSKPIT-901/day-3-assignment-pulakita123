@@ -1,0 +1,20 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+int findGCD(vector<int>& nums) {
+    int minNum = *min_element(nums.begin(), nums.end());
+    int maxNum = *max_element(nums.begin(), nums.end());
+    return gcd(minNum, maxNum);
+}
+
+int main() {
+    vector<int> nums = {2, 5, 6, 9, 10};
+    cout << "GCD of smallest and largest numbers: " << findGCD(nums) << endl;
+    return 0;
+}
